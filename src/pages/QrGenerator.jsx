@@ -3,7 +3,6 @@ import QRCode from "qrcode";
 import { getProducts } from "../api/endpoints";
 import { useApiData } from "../hooks/useApiData";
 import { useToast } from "../components/Toast";
-import { extractError } from "../utils/extractError";
 import "./QrGenerator.css";
 
 export default function QrGenerator() {

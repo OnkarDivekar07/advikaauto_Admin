@@ -11,7 +11,6 @@ export default function ProductSheets() {
   const [search, setSearch]        = useState("");
   const [selectedIds, setSelected] = useState([]);
   const [loadError, setLoadError]  = useState(null);
-  const toast = useToast();
 
   const generateQrs = useCallback(async (list) => {
     const map = {};

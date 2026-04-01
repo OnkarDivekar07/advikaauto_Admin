@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useEffect, useRef } from "react";
+import React, { useState, useCallback,useRef } from "react";
 import { Trash2, ChevronDown, ChevronUp } from "lucide-react";
 import {
   getProducts,
