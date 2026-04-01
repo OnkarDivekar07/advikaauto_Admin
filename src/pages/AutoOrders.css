@@ -1,0 +1,113 @@
+.orders-page {
+  width: 100%;
+  font-family: 'Poppins', sans-serif;
+}
+
+.orders-page .page-title {
+  font-size: 26px;
+  font-weight: 700;
+  margin-bottom: 24px;
+  color: #1a2e45;
+}
+
+/* ─── Order card ──────────────────────────────────────────────────────────── */
+.order-card {
+  background: white;
+  border-radius: 12px;
+  padding: 22px;
+  margin-bottom: 22px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
+  border: 1px solid #f0f0f0;
+}
+
+.order-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.order-id {
+  font-size: 16px;
+  font-weight: 700;
+  color: #1a2e45;
+}
+
+.order-total {
+  font-weight: 700;
+  font-size: 15px;
+  color: #2a9d8f;
+  background: #eef9f8;
+  padding: 5px 12px;
+  border-radius: 20px;
+}
+
+/* ─── Order table ─────────────────────────────────────────────────────────── */
+.order-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+  overflow-x: auto;
+  display: block;
+}
+
+.order-table th {
+  text-align: left;
+  padding: 11px 12px;
+  background: #f8f9fa;
+  color: #555;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.order-table td {
+  padding: 11px 12px;
+  border-bottom: 1px solid #f0f0f0;
+  vertical-align: middle;
+}
+
+.stock     { color: #e67e22; font-weight: 600; }
+.suggested { color: #2a9d8f; font-weight: 600; }
+
+.qty-input {
+  width: 72px;
+  padding: 7px 9px;
+  border-radius: 6px;
+  border: 1.5px solid #dde1e7;
+  font-size: 14px;
+  font-family: inherit;
+  text-align: center;
+  transition: border-color 0.2s;
+}
+
+.qty-input:focus {
+  outline: none;
+  border-color: #2a9d8f;
+}
+
+/* ─── Action buttons ──────────────────────────────────────────────────────── */
+.order-actions {
+  margin-top: 16px;
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.approve-btn,
+.reject-btn {
+  padding: 9px 18px;
+  border: none;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: inherit;
+  transition: background 0.2s, transform 0.1s;
+}
+
+.approve-btn         { background: #2a9d8f; color: white; }
+.approve-btn:hover   { background: #21867a; transform: translateY(-1px); }
+.reject-btn          { background: #e63946; color: white; }
+.reject-btn:hover    { background: #c82333; transform: translateY(-1px); }

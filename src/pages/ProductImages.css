@@ -1,0 +1,350 @@
+.product-images-page {
+  width: 100%;
+  font-family: 'Poppins', sans-serif;
+}
+
+.product-images-page h1 {
+  font-size: 26px;
+  font-weight: 700;
+  color: #1a2e45;
+  margin-bottom: 16px;
+}
+
+/* ─── Search ──────────────────────────────────────────────────────────────── */
+.search-bar {
+  margin-bottom: 20px;
+}
+
+.search-bar input {
+  width: 100%;
+  max-width: 400px;
+  padding: 10px 14px;
+  font-size: 14px;
+  font-family: inherit;
+  border: 1.5px solid #dde1e7;
+  border-radius: 8px;
+  box-sizing: border-box;
+  transition: border-color 0.2s;
+}
+
+.search-bar input:focus {
+  outline: none;
+  border-color: #2a9d8f;
+  box-shadow: 0 0 0 2px rgba(42, 157, 143, 0.12);
+}
+
+/* ─── Table ───────────────────────────────────────────────────────────────── */
+.image-table {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+/* 5 columns: name | suppliers | unit | marathi | image */
+.image-row {
+  display: grid;
+  grid-template-columns: 1.4fr 2fr 1fr 1.2fr 0.9fr;
+  align-items: start;
+  gap: 12px;
+  background: white;
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+  padding: 14px 16px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
+  transition: box-shadow 0.2s;
+}
+
+.image-row:hover {
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08);
+}
+
+.col {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+/* ─── Name column ─────────────────────────────────────────────────────────── */
+.name-col {
+  justify-content: center;
+  padding-top: 4px;
+}
+
+.product-name {
+  font-weight: 600;
+  color: #1a2e45;
+  font-size: 14px;
+  word-break: break-word;
+}
+
+.product-marathi {
+  font-size: 12px;
+  color: #888;
+}
+
+/* ─── Supplier mapping panel ──────────────────────────────────────────────── */
+.supplier-col {
+  min-width: 0;
+}
+
+.supplier-mapping-panel {
+  width: 100%;
+}
+
+.mapping-toggle {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 8px 10px;
+  background: #f8f9fa;
+  border: 1.5px solid #dde1e7;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 12px;
+  font-family: inherit;
+  text-align: left;
+  transition: border-color 0.2s, background 0.2s;
+}
+
+.mapping-toggle:hover,
+.mapping-toggle.open {
+  border-color: #2a9d8f;
+  background: #f0faf9;
+}
+
+.mapping-toggle-label {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+}
+
+.mapping-badge {
+  color: #1a2e45;
+  font-weight: 600;
+  display: block;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.mapping-empty {
+  color: #aaa;
+  font-style: italic;
+}
+
+.mapping-body {
+  margin-top: 8px;
+  padding: 10px;
+  background: #fafbfc;
+  border: 1.5px solid #e5e7eb;
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.mapping-loading {
+  font-size: 12px;
+  color: #888;
+  text-align: center;
+  padding: 6px 0;
+}
+
+.priority-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.priority-label {
+  font-size: 12px;
+  font-weight: 600;
+  color: #555;
+  width: 62px;
+  flex-shrink: 0;
+}
+
+.priority-select {
+  flex: 1;
+  padding: 6px 8px;
+  border: 1px solid #dde1e7;
+  border-radius: 6px;
+  font-size: 12px;
+  font-family: inherit;
+  background: white;
+  cursor: pointer;
+  transition: border-color 0.2s;
+}
+
+.priority-select:focus {
+  outline: none;
+  border-color: #2a9d8f;
+}
+
+.save-mapping-btn {
+  padding: 7px 14px;
+  background: #2a9d8f;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: inherit;
+  align-self: flex-end;
+  transition: background 0.2s;
+}
+
+.save-mapping-btn:hover:not(:disabled) {
+  background: #21867a;
+}
+
+/* ─── Unit column ─────────────────────────────────────────────────────────── */
+.unit-col {
+  justify-content: flex-start;
+  padding-top: 4px;
+}
+
+.unit-col select {
+  width: 100%;
+  padding: 7px 8px;
+  border: 1.5px solid #dde1e7;
+  border-radius: 6px;
+  font-size: 13px;
+  font-family: inherit;
+  background: white;
+  cursor: pointer;
+  transition: border-color 0.2s;
+}
+
+.unit-col select:focus {
+  outline: none;
+  border-color: #2a9d8f;
+}
+
+/* ─── Marathi column ──────────────────────────────────────────────────────── */
+.marathi-col {
+  padding-top: 4px;
+}
+
+.marathi-col input {
+  width: 100%;
+  padding: 7px 9px;
+  font-size: 13px;
+  font-family: inherit;
+  border: 1.5px solid #dde1e7;
+  border-radius: 6px;
+  box-sizing: border-box;
+  transition: border-color 0.2s;
+}
+
+.marathi-col input:focus {
+  outline: none;
+  border-color: #2a9d8f;
+}
+
+.saving {
+  font-size: 11px;
+  color: #2a9d8f;
+  font-style: italic;
+}
+
+/* ─── Image column ────────────────────────────────────────────────────────── */
+.image-col {
+  align-items: center;
+  padding-top: 4px;
+}
+
+.image-wrapper {
+  position: relative;
+  width: 80px;
+  height: 64px;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #f8fafc;
+}
+
+.image-wrapper img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+}
+
+.delete-btn {
+  position: absolute;
+  top: 3px;
+  right: 3px;
+  background: rgba(230, 57, 70, 0.88);
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 3px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  transition: background 0.2s;
+}
+
+.delete-btn:hover { background: #c82333; }
+
+.upload-btn {
+  display: inline-block;
+  border: 1.5px dashed #aab;
+  padding: 8px 10px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 600;
+  color: #666;
+  text-align: center;
+  transition: border-color 0.2s, color 0.2s;
+  line-height: 1.3;
+}
+
+.upload-btn:hover,
+.upload-btn.uploading {
+  border-color: #2a9d8f;
+  color: #2a9d8f;
+}
+
+.retry-btn {
+  margin-top: 5px;
+  padding: 5px 8px;
+  font-size: 11px;
+  background: #fef08a;
+  border: 1px solid #ca8a04;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 600;
+  font-family: inherit;
+}
+
+.empty-state {
+  text-align: center;
+  color: #9ca3af;
+  font-size: 15px;
+  padding: 48px 0;
+}
+
+/* ─── Responsive ──────────────────────────────────────────────────────────── */
+@media (max-width: 960px) {
+  .image-row {
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: auto auto auto;
+  }
+
+  .name-col    { grid-column: 1 / -1; }
+  .image-col   { align-items: flex-start; }
+}
+
+@media (max-width: 540px) {
+  .image-row {
+    grid-template-columns: 1fr;
+  }
+}

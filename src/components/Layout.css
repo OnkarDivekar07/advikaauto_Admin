@@ -1,0 +1,193 @@
+/* ─── Layout Shell ────────────────────────────────────────────────────────── */
+
+.layout {
+  display: flex;
+  min-height: 100vh;
+  position: relative;
+}
+
+/* ─── Sidebar ─────────────────────────────────────────────────────────────── */
+
+.sidebar {
+  width: 240px;
+  background: linear-gradient(180deg, #1a2e45 0%, #243B55 100%);
+  color: white;
+  padding: 24px 16px;
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  overflow-y: auto;
+  transition: left 0.3s ease;
+}
+
+.logo {
+  font-size: 20px;
+  font-weight: 700;
+  margin-bottom: 36px;
+  text-align: center;
+  letter-spacing: 0.5px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* ─── Nav Links ───────────────────────────────────────────────────────────── */
+
+.sidebar nav {
+  flex: 1;
+}
+
+.nav-link {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 11px 14px;
+  margin-bottom: 4px;
+  border-radius: 8px;
+  text-decoration: none;
+  color: rgba(255, 255, 255, 0.72);
+  font-size: 14px;
+  font-weight: 500;
+  transition: background 0.2s, color 0.2s;
+}
+
+.nav-link:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: white;
+}
+
+.nav-link.active {
+  background: #2a9d8f;
+  color: white;
+  font-weight: 600;
+}
+
+.nav-icon {
+  font-size: 16px;
+  width: 22px;
+  text-align: center;
+  flex-shrink: 0;
+}
+
+/* ─── Logout ──────────────────────────────────────────────────────────────── */
+
+.logout-btn {
+  width: 100%;
+  margin-top: 16px;
+  padding: 11px 14px;
+  background: rgba(230, 57, 70, 0.15);
+  color: #ff8a8a;
+  border: 1px solid rgba(230, 57, 70, 0.3);
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  text-align: left;
+  transition: background 0.2s, color 0.2s;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.logout-btn:hover {
+  background: rgba(230, 57, 70, 0.3);
+  color: #fff;
+}
+
+/* ─── Main Area ───────────────────────────────────────────────────────────── */
+
+.main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  background: #f4f6f9;
+}
+
+/* ─── Topbar ──────────────────────────────────────────────────────────────── */
+
+.topbar {
+  height: 60px;
+  background: #ffffff;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
+  display: flex;
+  align-items: center;
+  padding: 0 24px;
+  gap: 16px;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+/* Hidden on desktop — sidebar always visible */
+.menu-btn {
+  display: none;
+  background: none;
+  border: none;
+  font-size: 22px;
+  cursor: pointer;
+  padding: 4px 8px;
+  border-radius: 6px;
+  color: #243B55;
+  transition: background 0.2s;
+}
+
+.menu-btn:hover {
+  background: #f0f0f0;
+}
+
+.page-name {
+  font-weight: 700;
+  font-size: 16px;
+  color: #243B55;
+  text-transform: capitalize;
+}
+
+/* ─── Content ─────────────────────────────────────────────────────────────── */
+
+.content {
+  padding: 28px 32px;
+  flex: 1;
+}
+
+/* ─── Overlay (mobile only) ───────────────────────────────────────────────── */
+
+.overlay {
+  display: none;
+}
+
+/* ─── Mobile ──────────────────────────────────────────────────────────────── */
+
+@media (max-width: 768px) {
+  .sidebar {
+    position: fixed;
+    left: -260px;
+    top: 0;
+    height: 100%;
+    z-index: 1001;
+    width: 240px;
+  }
+
+  .sidebar.open {
+    left: 0;
+    box-shadow: 4px 0 20px rgba(0, 0, 0, 0.3);
+  }
+
+  .overlay {
+    display: block;
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.45);
+    z-index: 1000;
+  }
+
+  .menu-btn {
+    display: block;
+  }
+
+  .content {
+    padding: 16px;
+  }
+}

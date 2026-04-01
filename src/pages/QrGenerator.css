@@ -1,0 +1,93 @@
+.qr-page {
+  width: 100%;
+  max-width: 480px;
+  margin: 0 auto;
+  font-family: 'Poppins', sans-serif;
+  text-align: center;
+}
+
+.qr-page h1 {
+  font-size: 24px;
+  font-weight: 700;
+  color: #1a2e45;
+  margin-bottom: 24px;
+}
+
+.qr-search {
+  width: 100%;
+  padding: 10px 14px;
+  border: 1.5px solid #dde1e7;
+  border-radius: 8px;
+  font-size: 14px;
+  font-family: inherit;
+  margin-bottom: 12px;
+  box-sizing: border-box;
+  transition: border-color 0.2s;
+}
+
+.qr-search:focus {
+  outline: none;
+  border-color: #2a9d8f;
+}
+
+.qr-select {
+  width: 100%;
+  padding: 10px 14px;
+  border: 1.5px solid #dde1e7;
+  border-radius: 8px;
+  font-size: 14px;
+  font-family: inherit;
+  margin-bottom: 20px;
+  background: white;
+  box-sizing: border-box;
+  cursor: pointer;
+  transition: border-color 0.2s;
+}
+
+.qr-select:focus {
+  outline: none;
+  border-color: #2a9d8f;
+}
+
+/* QR preview card — screen size (not print cm) */
+.qr-wrapper {
+  display: inline-block;
+  border: 2px solid #e5e7eb;
+  border-radius: 12px;
+  padding: 16px;
+  margin: 0 auto 16px;
+  background: white;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
+}
+
+.qr-name {
+  font-size: 14px;
+  font-weight: 700;
+  text-align: center;
+  margin-bottom: 10px;
+  color: #1a2e45;
+}
+
+.qr-img {
+  width: 180px;
+  height: 180px;
+  display: block;
+}
+
+/* Download button */
+.qr-page .primary-btn {
+  background: #243B55;
+  color: white;
+  border: none;
+  padding: 10px 24px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: inherit;
+  transition: background 0.2s;
+}
+
+.qr-page .primary-btn:hover {
+  background: #1a2e45;
+}
