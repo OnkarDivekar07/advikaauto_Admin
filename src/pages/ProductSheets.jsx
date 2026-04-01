@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useCallback } from "react";
 import QRCode from "qrcode";
 import { getProducts } from "../api/endpoints";
-import { useToast } from "../components/Toast";
 import { extractError } from "../utils/extractError";
 import "./ProductSheets.css";
 
