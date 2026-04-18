@@ -1,54 +1,196 @@
-.finance-page {
+/* ── Profit First Financials ──────────────────────────────── */
+
+.pf-page {
   width: 100%;
   font-family: 'Poppins', sans-serif;
+  max-width: 960px;
 }
 
-.finance-title {
+.pf-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 24px;
+}
+
+.pf-title {
   font-size: 26px;
   font-weight: 700;
-  margin-bottom: 24px;
   color: #1a2e45;
+  margin: 0 0 4px;
 }
 
-.finance-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: 20px;
-}
-
-.finance-card {
-  padding: 28px 24px;
-  border-radius: 12px;
-  background: white;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
-}
-
-.finance-card:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
-}
-
-.finance-card .label {
-  color: #888;
+.pf-tagline {
   font-size: 13px;
-  font-weight: 500;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  margin-bottom: 10px;
+  color: #888;
+  margin: 0;
 }
 
-.finance-card h2 {
-  font-size: 32px;
+.pf-month-select {
+  padding: 8px 14px;
+  border: 1.5px solid #e2e8f0;
+  border-radius: 8px;
+  font-size: 14px;
+  font-family: 'Poppins', sans-serif;
+  color: #1a2e45;
+  background: white;
+  cursor: pointer;
+  outline: none;
+}
+.pf-month-select:focus { border-color: #6366f1; }
+
+.pf-section-label {
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+  color: #94a3b8;
+  margin: 28px 0 10px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.pf-manual-tag {
+  background: #ede9fe;
+  color: #6d28d9;
+  font-size: 10px;
+  padding: 2px 8px;
+  border-radius: 20px;
+  text-transform: none;
+  letter-spacing: 0;
+  font-weight: 500;
+}
+
+/* ── Grids ── */
+.pf-grid { display: grid; gap: 16px; }
+.pf-grid-1 { grid-template-columns: 1fr; }
+.pf-grid-2 { grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); }
+.pf-grid-3 { grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); }
+
+/* ── Card base ── */
+.pf-card {
+  background: white;
+  border-radius: 12px;
+  border-left: 5px solid #e2e8f0;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.05);
+  padding: 20px 20px 16px;
+  transition: box-shadow 0.2s;
+}
+.pf-card:hover { box-shadow: 0 6px 20px rgba(0,0,0,0.09); }
+
+/* ── Sales card variant ── */
+.pf-card-sales { padding: 22px 24px; }
+.pf-sales-value {
+  font-size: 36px;
   font-weight: 700;
   color: #1a2e45;
+  margin: 8px 0 10px;
 }
 
-.cash   { border-left: 5px solid #22c55e; }
-.online { border-left: 5px solid #3b82f6; }
-
-.loading {
-  color: #888;
-  font-size: 15px;
-  margin: 20px 0;
+/* ── Card head ── */
+.pf-card-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 14px;
 }
+.pf-card-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: #1a2e45;
+  margin: 0 0 3px;
+}
+.pf-card-subtitle {
+  font-size: 12px;
+  color: #94a3b8;
+  margin: 0;
+}
+
+/* ── Edit button ── */
+.pf-edit-btn {
+  font-size: 12px;
+  padding: 4px 12px;
+  border: 1.5px solid #e2e8f0;
+  border-radius: 20px;
+  background: white;
+  cursor: pointer;
+  color: #6366f1;
+  font-weight: 500;
+  white-space: nowrap;
+  transition: border-color 0.15s, background 0.15s;
+}
+.pf-edit-btn:hover { border-color: #6366f1; background: #ede9fe; }
+
+/* ── Row ── */
+.pf-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 6px 0;
+  border-bottom: 1px solid #f1f5f9;
+}
+.pf-row:last-of-type { border-bottom: none; }
+.pf-row-label { font-size: 12px; color: #94a3b8; font-weight: 500; }
+.pf-row-value { font-size: 14px; font-weight: 600; color: #1a2e45; }
+.pf-actual    { display: flex; align-items: center; gap: 8px; }
+
+/* ── Inline input ── */
+.pf-inline-input {
+  width: 110px;
+  padding: 4px 8px;
+  border: 1.5px solid #6366f1;
+  border-radius: 6px;
+  font-size: 14px;
+  font-family: 'Poppins', sans-serif;
+  text-align: right;
+  outline: none;
+}
+
+/* ── Delta indicator ── */
+.pf-delta {
+  font-size: 11px;
+  font-weight: 500;
+  margin-top: 10px;
+  padding: 4px 10px;
+  border-radius: 6px;
+}
+
+/* ── Badge ── */
+.pf-badge {
+  font-size: 10px;
+  font-weight: 600;
+  padding: 2px 7px;
+  border-radius: 20px;
+}
+
+/* ── Colour states ── */
+.pf-good,
+.pf-row.pf-good .pf-row-value { color: #16a34a; }
+.pf-badge.pf-good  { background: #dcfce7; color: #16a34a; }
+.pf-delta.pf-good  { background: #f0fdf4; color: #16a34a; }
+
+.pf-bad,
+.pf-row.pf-bad .pf-row-value  { color: #dc2626; }
+.pf-badge.pf-bad   { background: #fee2e2; color: #dc2626; }
+.pf-delta.pf-bad   { background: #fef2f2; color: #dc2626; }
+
+.pf-ok,
+.pf-row.pf-ok .pf-row-value   { color: #16a34a; }
+.pf-badge.pf-ok    { background: #dcfce7; color: #16a34a; }
+.pf-delta.pf-ok    { background: #f0fdf4; color: #16a34a; }
+
+/* ── Note ── */
+.pf-note {
+  font-size: 11px;
+  color: #94a3b8;
+  margin: 10px 0 0;
+  line-height: 1.6;
+}
+
+/* ── Loading / error ── */
+.pf-loading { color: #888; font-size: 15px; margin: 20px 0; }
+.pf-saving  { color: #6366f1; font-size: 13px; margin: 4px 0 12px; }
+.pf-error   { background: #fef2f2; color: #dc2626; border-radius: 8px; padding: 12px 16px; margin: 12px 0; font-size: 14px; }

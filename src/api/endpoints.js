@@ -139,3 +139,13 @@ export const addStock = (payload) =>
 // ─── Daily Entries (simplified transaction list for display) ──────────────────
 export const getDailyEntries = () =>
   API.get("/transactions/entries");
+
+// ─── Profit First (Finance) ───────────────────────────────────────────────────
+export const getProfitFirstSummary = (month) =>
+  API.get('/finance/profit-first', { params: month ? { month } : {} });
+
+export const saveProfitFirstEntry = (month, payload) =>
+  API.post('/finance/profit-first', payload, { params: month ? { month } : {} });
+
+export const getProfitFirstMonths = () =>
+  API.get('/finance/profit-first/months');
