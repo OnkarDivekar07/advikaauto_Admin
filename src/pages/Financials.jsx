@@ -23,6 +23,12 @@ const deltaClass = (actual, target, invertGood) => {
   return "pf-ok";
 };
 
+const monthLabel = (key) => {
+  const [y, m] = key.split("-");
+  return new Date(Number(y), Number(m) - 1, 1)
+    .toLocaleString("en-IN", { month: "long", year: "numeric" });
+};
+
 // ─── Sub-components ──────────────────────────────────────────────────────────
 
 function PFCard({
@@ -108,7 +114,7 @@ function PFCard({
 // ─── Main Page ───────────────────────────────────────────────────────────────
 
 export default function Financials() {
-  // ── FIX: useMemo so currentKey is stable across renders ──────────────────
+  // Compute once — stable across renders, no dependency issues
   const currentKey = useMemo(() => {
     const now = new Date();
     return `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, "0")}`;
@@ -164,12 +170,6 @@ export default function Financials() {
     } finally {
       setSaving(false);
     }
-  };
-
-  const monthLabel = (key) => {
-    const [y, m] = key.split("-");
-    return new Date(Number(y), Number(m) - 1, 1)
-      .toLocaleString("en-IN", { month: "long", year: "numeric" });
   };
 
   return (
