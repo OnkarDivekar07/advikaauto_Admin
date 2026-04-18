@@ -1,4 +1,4 @@
-import React, { useCallback, useState, useEffect } from "react";
+import React, { useCallback, useState, useEffect, useMemo } from "react";
 import {
   getProfitFirstSummary,
   saveProfitFirstEntry,
@@ -23,22 +23,14 @@ const deltaClass = (actual, target, invertGood) => {
   return "pf-ok";
 };
 
+const monthLabel = (key) => {
+  const [y, m] = key.split("-");
+  return new Date(Number(y), Number(m) - 1, 1)
+    .toLocaleString("en-IN", { month: "long", year: "numeric" });
+};
+
 // ─── Sub-components ──────────────────────────────────────────────────────────
 
-/**
- * PF Card — displays one Profit First bucket.
- *
- * Props:
- *   title        string
- *   subtitle     string   (e.g. "60% of Sales")
- *   target       number   (computed / ideal)
- *   actual       number | null
- *   accentColor  string   CSS color
- *   invertGood   bool     — true for OpEx: being BELOW target is green
- *   editable     bool     — shows inline edit input
- *   onSave       fn(value)
- *   note         string   (optional helper text)
- */
 function PFCard({
   title, subtitle, target, actual,
   accentColor = "#6366f1",
@@ -78,13 +70,11 @@ function PFCard({
         )}
       </div>
 
-      {/* Target row */}
       <div className="pf-row">
         <span className="pf-row-label">Target</span>
         <span className="pf-row-value">{fmt(target)}</span>
       </div>
 
-      {/* Actual row */}
       <div className={`pf-row ${cls}`}>
         <span className="pf-row-label">Actual</span>
         {editing ? (
@@ -106,7 +96,6 @@ function PFCard({
         )}
       </div>
 
-      {/* Delta indicator */}
       {actual != null && target != null && (
         <div className={`pf-delta ${cls}`}>
           {actual > target
@@ -125,8 +114,11 @@ function PFCard({
 // ─── Main Page ───────────────────────────────────────────────────────────────
 
 export default function Financials() {
-  const now = new Date();
-  const currentKey = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, "0")}`;
+  // Compute once — stable across renders, no dependency issues
+  const currentKey = useMemo(() => {
+    const now = new Date();
+    return `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, "0")}`;
+  }, []);
 
   const [selectedMonth, setSelectedMonth] = useState(currentKey);
   const [months,        setMonths]        = useState([currentKey]);
@@ -140,12 +132,11 @@ export default function Financials() {
     getProfitFirstMonths()
       .then(res => {
         const list = res.data?.data ?? [];
-        // Always include current month even if no transactions yet
         const merged = list.includes(currentKey) ? list : [currentKey, ...list];
         setMonths(merged);
       })
-      .catch(() => {}); // non-critical
-  }, []);
+      .catch(() => {});
+  }, [currentKey]);
 
   // Load summary whenever month changes
   const load = useCallback(async () => {
@@ -163,7 +154,6 @@ export default function Financials() {
 
   useEffect(() => { load(); }, [load]);
 
-  // Save manual entry for one or more buckets
   const handleSave = async (field, value) => {
     if (!data) return;
     setSaving(true);
@@ -174,18 +164,12 @@ export default function Financials() {
         owners_pay_actual:     field === "owners_pay"     ? value : (data.owners_pay?.actual     ?? 0),
       };
       await saveProfitFirstEntry(selectedMonth, payload);
-      await load(); // refresh from server
+      await load();
     } catch {
-      // silent — values will revert on next load
+      // silent — values revert on next load
     } finally {
       setSaving(false);
     }
-  };
-
-  const monthLabel = (key) => {
-    const [y, m] = key.split("-");
-    return new Date(Number(y), Number(m) - 1, 1)
-      .toLocaleString("en-IN", { month: "long", year: "numeric" });
   };
 
   return (
@@ -213,7 +197,7 @@ export default function Financials() {
 
       {!loading && !error && data && (
         <>
-          {/* ── Sales (top) ── */}
+          {/* ── Sales ── */}
           <div className="pf-section-label">Revenue</div>
           <div className="pf-grid pf-grid-1">
             <div className="pf-card pf-card-sales" style={{ borderLeftColor: "#0ea5e9" }}>
@@ -263,7 +247,10 @@ export default function Financials() {
           </div>
 
           {/* ── Manual buckets ── */}
-          <div className="pf-section-label">Profit Allocation Buckets <span className="pf-manual-tag">manually confirmed</span></div>
+          <div className="pf-section-label">
+            Profit Allocation Buckets{" "}
+            <span className="pf-manual-tag">manually confirmed</span>
+          </div>
           <div className="pf-grid pf-grid-3">
             <PFCard
               title="Profit"
