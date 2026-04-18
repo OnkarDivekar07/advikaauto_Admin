@@ -89,9 +89,15 @@ export default function Inventory() {
     }
   };
 
-  const filtered = products.filter((p) =>
-    p.name.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  const filtered = products
+    .filter((p) => p.name.toLowerCase().includes(searchTerm.toLowerCase()))
+    .sort((a, b) => {
+      // rank null/0 (never sold) goes to bottom; ascending rank = best seller first
+      if (!a.rank && !b.rank) return 0;
+      if (!a.rank) return 1;
+      if (!b.rank) return -1;
+      return a.rank - b.rank;
+    });
 
   return (
     <div className="billing-container">
