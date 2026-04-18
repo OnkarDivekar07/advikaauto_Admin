@@ -13,6 +13,8 @@ const MENU = [
   { name: "Product Images", path: "/product-images",  icon: "🖼️"  },
   { name: "Orders",         path: "/orders",          icon: "🛒" },
   { name: "Suppliers",      path: "/suppliers",       icon: "🏭" },
+  { name: "Analytics",      path: "/analytics",       icon: "📊" },
+  { name: "Customers",      path: "/customers",       icon: "👥" },
 ];
 
 export default function Layout({ children }) {

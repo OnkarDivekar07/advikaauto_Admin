@@ -1,4 +1,4 @@
-import React, { useState, useCallback,useRef } from "react";
+import React, { useState, useCallback, useRef } from "react";
 import { Trash2, ChevronDown, ChevronUp } from "lucide-react";
 import {
   getProducts,
@@ -9,6 +9,7 @@ import {
   updateMarathiName,
   updateDefaultUnit,
   mapProductSuppliers,
+  updateLeadBuffer,
 } from "../api/endpoints";
 import { useApiData } from "../hooks/useApiData";
 import { useToast } from "../components/Toast";
@@ -20,6 +21,109 @@ const UNIT_OPTIONS = [
   { value: "jodi",  label: "जोडी (JODI)" },
   { value: "dozen", label: "डझन (DOZEN)" },
 ];
+
+// ─── Lead & Buffer days editor ────────────────────────────────────────────────
+// Inline CRUD panel: shows current leadDays / bufferDays, lets operator edit.
+// Auto-saves on blur of either field; shows saved confirmation briefly.
+function LeadBufferPanel({ product, onSaved }) {
+  const [expanded,   setExpanded]   = useState(false);
+  const [leadDays,   setLeadDays]   = useState(String(product.leadDays   ?? 15));
+  const [bufferDays, setBufferDays] = useState(String(product.bufferDays ?? 7));
+  const [saving,     setSaving]     = useState(false);
+  const [saved,      setSaved]      = useState(false);
+  const toast = useToast();
+
+  // Keep local state in sync if parent refreshes products
+  const prevLead   = useRef(product.leadDays);
+  const prevBuffer = useRef(product.bufferDays);
+  if (prevLead.current !== product.leadDays) {
+    prevLead.current = product.leadDays;
+    setLeadDays(String(product.leadDays ?? 15));
+  }
+  if (prevBuffer.current !== product.bufferDays) {
+    prevBuffer.current = product.bufferDays;
+    setBufferDays(String(product.bufferDays ?? 7));
+  }
+
+  const handleSave = async () => {
+    const lead   = parseInt(leadDays,   10);
+    const buffer = parseInt(bufferDays, 10);
+    if (isNaN(lead)   || lead   < 0) { toast.warn("Lead days must be 0 or more.");   return; }
+    if (isNaN(buffer) || buffer < 0) { toast.warn("Buffer days must be 0 or more."); return; }
+    // Nothing changed — skip the network call
+    if (lead === (product.leadDays ?? 15) && buffer === (product.bufferDays ?? 7)) return;
+
+    setSaving(true);
+    try {
+      await updateLeadBuffer(product.id, lead, buffer);
+      setSaved(true);
+      setTimeout(() => setSaved(false), 2000);
+      onSaved?.();
+    } catch (err) {
+      toast.error(`Failed to save: ${err?.response?.data?.message ?? err.message}`);
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  const badgeText = `Lead ${product.leadDays ?? 15}d · Buffer ${product.bufferDays ?? 7}d`;
+
+  return (
+    <div className="lead-buffer-panel">
+      <button
+        className={`lb-toggle ${expanded ? "open" : ""}`}
+        onClick={() => setExpanded((p) => !p)}
+        type="button"
+        title="Set lead days and buffer days for threshold calculation"
+      >
+        <span className="lb-badge">{badgeText}</span>
+        {expanded ? <ChevronUp size={13} /> : <ChevronDown size={13} />}
+      </button>
+
+      {expanded && (
+        <div className="lb-body">
+          <div className="lb-row">
+            <label className="lb-label" title="Days from placing the order to stock arriving at your shop">
+              Lead Days
+              <span className="lb-hint">order→arrival</span>
+            </label>
+            <input
+              className="lb-input"
+              type="number"
+              min="0"
+              max="90"
+              value={leadDays}
+              onChange={(e) => setLeadDays(e.target.value)}
+              onBlur={handleSave}
+              disabled={saving}
+            />
+          </div>
+          <div className="lb-row">
+            <label className="lb-label" title="Extra safety stock in days on top of 30-day demand">
+              Buffer Days
+              <span className="lb-hint">safety stock</span>
+            </label>
+            <input
+              className="lb-input"
+              type="number"
+              min="0"
+              max="60"
+              value={bufferDays}
+              onChange={(e) => setBufferDays(e.target.value)}
+              onBlur={handleSave}
+              disabled={saving}
+            />
+          </div>
+          <p className="lb-formula">
+            Max stock = avg/day × (30 + {bufferDays || "?"} + {leadDays || "?"}) days
+          </p>
+          {saving && <p className="lb-status saving">Saving…</p>}
+          {saved  && <p className="lb-status saved">✓ Saved</p>}
+        </div>
+      )}
+    </div>
+  );
+}
 
 // ─── Supplier mapping panel — isolated per product ────────────────────────────
 // Loads its own existing mappings only when expanded, so 50 products
@@ -218,11 +322,19 @@ export default function ProductImages() {
     }
   };
 
-  const filtered = products.filter(
-    (p) =>
-      (p.name ?? "").toLowerCase().includes(search.toLowerCase()) ||
-      (p.marathiName ?? "").toLowerCase().includes(search.toLowerCase())
-  );
+  const filtered = products
+    .filter(
+      (p) =>
+        (p.name ?? "").toLowerCase().includes(search.toLowerCase()) ||
+        (p.marathiName ?? "").toLowerCase().includes(search.toLowerCase())
+    )
+    .sort((a, b) => {
+      // rank null (never sold) goes to bottom; otherwise ascending rank (1 = top seller)
+      if (a.rank == null && b.rank == null) return 0;
+      if (a.rank == null) return 1;
+      if (b.rank == null) return -1;
+      return a.rank - b.rank;
+    });
 
   return (
     <div className="product-images-page">
@@ -256,6 +368,14 @@ export default function ProductImages() {
               <SupplierMappingPanel
                 product={p}
                 suppliers={suppliers}
+              />
+            </div>
+
+            {/* Lead & Buffer days */}
+            <div className="col lead-buffer-col">
+              <LeadBufferPanel
+                product={p}
+                onSaved={refreshProducts}
               />
             </div>
 

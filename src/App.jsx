@@ -18,6 +18,8 @@ import ProductSheets   from "./pages/ProductSheets";
 import ProductImages   from "./pages/ProductImages";
 import AutoOrders      from "./pages/AutoOrders";
 import Suppliers       from "./pages/Suppliers";
+import Analytics       from "./pages/Analytics";
+import CustomerCount   from "./pages/CustomerCount";
 
 /**
  * Wraps a page component in Layout + ProtectedRoute.
@@ -49,6 +51,8 @@ export default function App() {
           <Route path="/product-images" element={<Protected><ProductImages /></Protected>} />
           <Route path="/orders"         element={<Protected><AutoOrders /></Protected>} />
           <Route path="/suppliers"      element={<Protected><Suppliers /></Protected>} />
+          <Route path="/analytics"      element={<Protected><Analytics /></Protected>} />
+          <Route path="/customers"      element={<Protected><CustomerCount /></Protected>} />
 
           {/* Fallback */}
           <Route path="*" element={<Navigate to="/" replace />} />

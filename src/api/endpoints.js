@@ -39,6 +39,9 @@ export const updateMarathiName = (id, marathiName) =>
 export const updateDefaultUnit = (id, defaultUnit) =>
   API.put(`/products/${id}/unit`, { defaultUnit });
 
+export const updateLeadBuffer = (id, leadDays, bufferDays) =>
+  API.put(`/products/${id}/lead-buffer`, { leadDays, bufferDays });
+
 // ─── Transactions ────────────────────────────────────────────────────────────
 export const submitBilling = (payload) =>
   API.post("/transactions/billing", payload);

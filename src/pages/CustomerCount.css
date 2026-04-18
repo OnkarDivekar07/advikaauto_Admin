@@ -1,0 +1,126 @@
+/* ─── Customer Count Page ────────────────────────────────────────────────── */
+.customer-count-page {
+  width: 100%;
+  font-family: 'Poppins', sans-serif;
+}
+
+.customer-count-page .page-title {
+  font-size: 26px;
+  font-weight: 700;
+  color: #1a2e45;
+  margin-bottom: 20px;
+}
+
+/* ─── Counter Card ────────────────────────────────────────────────────────── */
+.counter-card {
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 14px;
+  padding: 32px;
+  text-align: center;
+  max-width: 360px;
+  margin-bottom: 28px;
+  box-shadow: 0 1px 6px rgba(0,0,0,0.07);
+}
+
+.counter-label {
+  font-size: 13px;
+  font-weight: 600;
+  color: #6b7280;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin: 0 0 12px;
+}
+
+.counter-display {
+  font-size: 64px;
+  font-weight: 800;
+  color: #1a2e45;
+  line-height: 1;
+  margin-bottom: 20px;
+}
+
+.counter-controls {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+  margin-bottom: 12px;
+}
+
+.counter-btn {
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  border: none;
+  font-size: 24px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: transform 0.1s, box-shadow 0.2s;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+
+.counter-btn.increment {
+  background: #2a9d8f;
+  color: #fff;
+}
+
+.counter-btn.decrement {
+  background: #f3f4f6;
+  color: #1a2e45;
+}
+
+.counter-btn:hover { transform: scale(1.06); }
+.counter-btn:active { transform: scale(0.96); }
+
+.counter-hint {
+  font-size: 12px;
+  color: #9ca3af;
+  margin: 0;
+}
+
+/* ─── History ──────────────────────────────────────────────────────────────── */
+.count-history {
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 14px;
+  padding: 20px;
+  max-width: 480px;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+}
+
+.count-history h3 {
+  font-size: 15px;
+  font-weight: 700;
+  color: #1a2e45;
+  margin: 0 0 14px;
+}
+
+.count-history .table-wrapper {
+  overflow-x: auto;
+}
+
+.count-history table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+
+.count-history th {
+  text-align: left;
+  padding: 8px 12px;
+  background: #f9fafb;
+  color: #6b7280;
+  font-weight: 600;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.count-history td {
+  padding: 10px 12px;
+  color: #374151;
+  border-bottom: 1px solid #f3f4f6;
+}
+
+.count-history tr:last-child td { border-bottom: none; }
