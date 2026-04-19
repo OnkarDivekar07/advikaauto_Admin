@@ -336,6 +336,16 @@ export default function ProductImages() {
       return a.rank - b.rank;
     });
 
+  const totalRanked = filtered.filter((p) => p.rank != null).length;
+  const getCardStyle = (p) => {
+    if (p.rank == null || totalRanked === 0) return {};
+    const fastCutoff = Math.ceil(totalRanked * 0.25);
+    const slowCutoff = Math.ceil(totalRanked * 0.75);
+    if (p.rank <= fastCutoff) return { boxShadow: '0 0 14px 3px rgba(34,197,94,0.18)' };
+    if (p.rank <= slowCutoff) return { boxShadow: '0 0 14px 3px rgba(251,146,60,0.18)' };
+    return {};
+  };
+
   return (
     <div className="product-images-page">
       <h1>Product Images &amp; Units</h1>
@@ -353,7 +363,7 @@ export default function ProductImages() {
 
       <div className="image-table">
         {filtered.map((p) => (
-          <div key={p.id} className="image-row">
+          <div key={p.id} className="image-row" style={getCardStyle(p)}>
 
             {/* Name */}
             <div className="col name-col">

@@ -1,7 +1,7 @@
 import React, { useState, useCallback, useEffect } from "react";
 import {
-  getFinanceSummary,
   getMissingItems,
+  getDailySummary,
   getAllCustomerCounts,
 } from "../api/endpoints";
 import {
@@ -10,8 +10,6 @@ import {
   getAnalyticsSnapshot,
   saveAnalyticsSnapshot,
   getRankings,
-  getExpenseSummary,
-  getExpenseProfitLoss,
 } from "../api/analyticsEndpoints";
 import { useToast } from "../components/Toast";
 import { extractError } from "../utils/extractError";
@@ -101,7 +99,7 @@ function ProductList({ items, title, accent }) {
     <div className={`product-list-card ${accent}`}>
       <h3 className="pl-title">{title}</h3>
       <div className="pl-list">
-        {items.slice(0, 30).map((p, i) => (
+        {items.map((p, i) => (
           <div key={p.id} className="pl-item">
             <span className="pl-rank">#{i + 1}</span>
             <span className="pl-name">{p.name}</span>
@@ -204,30 +202,26 @@ export default function Analytics() {
   const loadAll = useCallback(async () => {
     setLoading(true);
     try {
-      const [finance, dist, cats, rankings, customers, missing, expenses, profitLoss, snapshot] =
+      const [dist, cats, rankings, missing, dailySummary, customers, snapshot] =
         await Promise.allSettled([
-          getFinanceSummary(),
           getInventoryDistribution(),
           getRankingCategories(),
           getRankings(),
-          getAllCustomerCounts(),
           getMissingItems(),
-          getExpenseSummary(),
-          getExpenseProfitLoss(),
+          getDailySummary(),
+          getAllCustomerCounts(),
           getAnalyticsSnapshot(),
         ]);
 
       const safe = (r, fallback = null) => (r.status === "fulfilled" ? r.value?.data?.data ?? r.value?.data ?? fallback : fallback);
 
       setData({
-        finance:    safe(finance, {}),
-        dist:       safe(dist, {}),
-        cats:       safe(cats, {}),
-        rankings:   safe(rankings, []),
-        customers:  safe(customers, []),
-        missing:    safe(missing, []),
-        expenses:   safe(expenses, {}),
-        profitLoss: safe(profitLoss, {}),
+        dist:         safe(dist, {}),
+        cats:         safe(cats, {}),
+        rankings:     safe(rankings, []),
+        missing:      safe(missing, []),
+        dailySummary: safe(dailySummary, {}),
+        customers:    safe(customers, []),
       });
 
       const snapshotData = safe(snapshot, null);
@@ -252,9 +246,8 @@ export default function Analytics() {
       const thisMonth = new Date().toISOString().slice(0, 7);
       const snapshot = {
         month: thisMonth,
-        operatingExpense: data.expenses?.total ?? 0,
-        monthlyProfit: data.profitLoss?.netProfit ?? 0,
-        totalSales: data.finance?.grandTotal ?? 0,
+        monthlyProfit: parseFloat(data.dailySummary?.monthlyProfit ?? 0),
+        totalSales: parseFloat(data.dailySummary?.monthlySales ?? 0),
         fastMovingValue: data.dist?.fastMoving?.totalStockValue ?? 0,
         fastMovingPct: data.dist?.fastMoving?.percentageOfStockValue ?? 0,
         slowMovingValue: data.dist?.slowMoving?.totalStockValue ?? 0,
@@ -280,10 +273,11 @@ export default function Analytics() {
     );
   }
 
-  const { finance = {}, dist = {}, rankings = [], customers = [], missing = [], expenses = {}, profitLoss = {} } = data || {};
+  const { dist = {}, cats = {}, rankings = [], missing = [], dailySummary = {}, customers = [] } = data || {};
 
   const fastItems = rankings.filter((p) => p.category === "fast-moving");
   const slowItems = rankings.filter((p) => p.category === "slow-moving");
+  const nonItems  = rankings.filter((p) => p.category === "non-moving");
 
   const thisMonth = new Date().toLocaleDateString("en-IN", { month: "long", year: "numeric" });
 
@@ -308,28 +302,19 @@ export default function Analytics() {
       {/* ── Row 1: Top KPIs ────────────────────────── */}
       <section className="kpi-row">
         <KpiCard
-          icon="💸"
-          label="Operating Expenses"
-          value={fmtCr(expenses?.total ?? 0)}
-          prev={prev?.operatingExpense}
-          subLabel={`Purchase: ${fmtCr(expenses?.breakdown?.purchase ?? 0)} · Transport: ${fmtCr(expenses?.breakdown?.transport ?? 0)}`}
-          accent="accent-red"
-          invertGreen={true}
-        />
-        <KpiCard
           icon="📈"
-          label="Monthly Profit"
-          value={fmtCr(profitLoss?.netProfit ?? 0)}
+          label="Profit Before Expenses"
+          value={fmtCr(dailySummary?.monthlyProfit ?? 0)}
           prev={prev?.monthlyProfit}
-          subLabel={`Revenue: ${fmtCr(profitLoss?.revenue ?? 0)} · Expenses: ${fmtCr(profitLoss?.expenses ?? 0)}`}
+          subLabel="Monthly net profit"
           accent="accent-green"
         />
         <KpiCard
           icon="🛒"
           label="Total Sales"
-          value={fmtCr(finance?.grandTotal ?? 0)}
+          value={fmtCr(dailySummary?.monthlySales ?? 0)}
           prev={prev?.totalSales}
-          subLabel={`Cash: ${fmtCr(finance?.cashTotal ?? 0)} · Online: ${fmtCr(finance?.onlineTotal ?? 0)}`}
+          subLabel="Monthly billing total"
           accent="accent-blue"
         />
       </section>
@@ -387,12 +372,12 @@ export default function Analytics() {
         </div>
       </section>
 
-      {/* ── Row 3: Top 30 Fast & Slow ─────────────── */}
+      {/* ── Row 3: Fast & Slow Movers ─────────────── */}
       <section className="analytics-section">
-        <SectionHeader title="Product Rankings" sub="Top 30 fast-moving vs slow-moving items by sales frequency" />
+        <SectionHeader title="Product Rankings" sub="Fast-moving vs slow-moving items by sales frequency" />
         <div className="dual-list">
-          <ProductList title="🚀 Top 30 Fast-Moving" items={fastItems} accent="fast-list" />
-          <ProductList title="🐢 Top 30 Slow-Moving" items={slowItems} accent="slow-list" />
+          <ProductList title="🚀 Fast-Moving" items={fastItems} accent="fast-list" />
+          <ProductList title="🐢 Slow-Moving" items={slowItems} accent="slow-list" />
         </div>
       </section>
 
