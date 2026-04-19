@@ -273,11 +273,10 @@ export default function Analytics() {
     );
   }
 
-  const { dist = {}, cats = {}, rankings = [], missing = [], dailySummary = {}, customers = [] } = data || {};
+  const { dist = {}, rankings = [], missing = [], dailySummary = {}, customers = [] } = data || {};
 
   const fastItems = rankings.filter((p) => p.category === "fast-moving");
   const slowItems = rankings.filter((p) => p.category === "slow-moving");
-  const nonItems  = rankings.filter((p) => p.category === "non-moving");
 
   const thisMonth = new Date().toLocaleDateString("en-IN", { month: "long", year: "numeric" });
 
