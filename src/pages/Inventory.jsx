@@ -34,7 +34,7 @@ export default function Inventory() {
   useEffect(() => { fetchProducts(); }, [fetchProducts]);
 
   const totalValue        = products.reduce((s, p) => s + p.quantity * p.price, 0);
-  const maxCapitalRequired = products.reduce((s, p) => s + (p.upper_threshold ?? 0) * p.price, 0);
+  const maxCapitalRequired = products.reduce((s, p) => s + Math.max(0, (p.upper_threshold ?? 0) - p.quantity) * p.price, 0);
 
   // Debounce individual field updates.
   // Uses a ref to store the latest product state so the setTimeout closure
