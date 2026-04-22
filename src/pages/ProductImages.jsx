@@ -3,6 +3,7 @@ import { Trash2, ChevronDown, ChevronUp } from "lucide-react";
 import {
   getProducts,
   getSuppliers,
+  getAllSupplierMappings,
   getProductSupplierMappings,
   uploadProductImage,
   deleteProductImage,
@@ -128,9 +129,9 @@ function LeadBufferPanel({ product, onSaved }) {
 // ─── Supplier mapping panel — isolated per product ────────────────────────────
 // Loads its own existing mappings only when expanded, so 50 products
 // don't all fire 50 requests on page load.
-function SupplierMappingPanel({ product, suppliers, onSaved }) {
+function SupplierMappingPanel({ product, suppliers, initialMappings, onSaved }) {
   const [expanded, setExpanded]       = useState(false);
-  const [mappings, setMappings]       = useState(null);  // null = not yet loaded
+  const [mappings, setMappings]       = useState(initialMappings ?? null);
   const [loadingMap, setLoadingMap]   = useState(false);
   const [selections, setSelections]   = useState({});    // { 1: supplierId, 2: ..., 3: ... }
   const [saving, setSaving]           = useState(false);
@@ -158,7 +159,17 @@ function SupplierMappingPanel({ product, suppliers, onSaved }) {
     }
   }, [product.id]);
 
-  useEffect(() => { loadMappings(); }, [loadMappings]);
+  useEffect(() => {
+    // Skip fetch if parent already supplied mappings via initialMappings prop
+    if (initialMappings) {
+      const sel = {};
+      initialMappings.forEach((m) => { sel[m.priority] = m.supplier_id; });
+      setSelections(sel);
+      hasFetched.current = true;
+      return;
+    }
+    loadMappings();
+  }, [loadMappings, initialMappings]);
 
   const handleToggle = () => {
     setExpanded((prev) => !prev);
@@ -257,8 +268,11 @@ export default function ProductImages() {
   const productsFn  = useCallback(getProducts,  []);
   const suppliersFn = useCallback(getSuppliers, []);
 
-  const { data: products  = [], error: loadError, refresh: refreshProducts } = useApiData(productsFn,  []);
-  const { data: suppliers = [] }                                              = useApiData(suppliersFn, []);
+  const allMappingsFn = useCallback(getAllSupplierMappings, []);
+
+  const { data: products  = [], error: loadError, refresh: refreshProducts } = useApiData(productsFn,     []);
+  const { data: suppliers = [] }                                              = useApiData(suppliersFn,    []);
+  const { data: allMappings = {}, refresh: refreshMappings }                 = useApiData(allMappingsFn, []);
   const toast = useToast();
 
   const [uploading,  setUploading]  = useState(null);
@@ -372,11 +386,13 @@ export default function ProductImages() {
               )}
             </div>
 
-            {/* Supplier mapping — isolated component, lazy-loads */}
+            {/* Supplier mapping — pre-populated from bulk fetch, no per-product requests */}
             <div className="col supplier-col">
               <SupplierMappingPanel
                 product={p}
                 suppliers={suppliers}
+                initialMappings={allMappings[p.id] ?? []}
+                onSaved={refreshMappings}
               />
             </div>
 

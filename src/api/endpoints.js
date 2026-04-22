@@ -63,6 +63,9 @@ export const getFinanceSummary = () =>
 export const getSuppliers = () =>
   API.get("/suppliers");
 
+export const getAllSupplierMappings = () =>
+  API.get("/suppliers/all-mappings");
+
 export const getProductSupplierMappings = (productId) =>
   API.get(`/suppliers/product/${productId}`);
 
