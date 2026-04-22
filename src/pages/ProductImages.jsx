@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useRef } from "react";
+import React, { useState, useCallback, useRef, useEffect } from "react";
 import { Trash2, ChevronDown, ChevronUp } from "lucide-react";
 import {
   getProducts,
@@ -137,7 +137,7 @@ function SupplierMappingPanel({ product, suppliers, onSaved }) {
   const toast = useToast();
   const hasFetched = useRef(false);
 
-  // Load existing mappings when panel opens — only once
+  // Load existing mappings — fetched on mount so badge shows immediately
   const loadMappings = useCallback(async () => {
     if (hasFetched.current) return;
     hasFetched.current = true;
@@ -158,11 +158,10 @@ function SupplierMappingPanel({ product, suppliers, onSaved }) {
     }
   }, [product.id]);
 
+  useEffect(() => { loadMappings(); }, [loadMappings]);
+
   const handleToggle = () => {
-    setExpanded((prev) => {
-      if (!prev) loadMappings();
-      return !prev;
-    });
+    setExpanded((prev) => !prev);
   };
 
   const handleSelect = (priority, supplierId) => {
